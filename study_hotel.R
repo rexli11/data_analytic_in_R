@@ -80,7 +80,7 @@ levels(hotel_df$agent) # null level >> 334
 levels(hotel_df$company) # null level >> 353
 levels(hotel_df$is_canceled)
 levels(hotel_df$is_repeated_guest)
-
+ㄆ
 # null值轉換，agent、Company
 null_agent <- which(levels(hotel_df$agent) == "NULL")
 levels(hotel_df$agent)[null_agent] <- "no_record"
@@ -106,7 +106,7 @@ hotel_df <- hotel_df %>%
     mutate(avg_adr = (adr / (adults + children)))
 
 # -------------------Visualization & Analytic--------------------------
-# 飯店取消率 - ok
+# 飯店取消率
 ggplot(data = hotel_df) +
     geom_bar(mapping = aes(x = is_canceled, fill = hotel)) +
     scale_fill_manual(values = c("#ffd700", "steelblue")) +
@@ -160,17 +160,23 @@ ggplot(data = hotel_df) +
 # 不同市場的取消率
 ggplot(data = hotel_df) +
     geom_bar(mapping = aes(x = is_canceled, fill = market_segment)) +
-    labs(title = "訂單龐大之餘是否掌握的住?", subtitle = "訂購市場間的取消率") +
+    labs(title = "訂單增加時入住率是否提升?", subtitle = "訂購市場間的取消率") +
     xlab("是否取消") +
     ylab("數量統計")
 
-# 假日與平均人均
+# 假日家庭客流量
 ggplot(data = hotel_df) +
     geom_point(mapping = aes(x = children, y = stays_in_weekend_nights, fill = children)) +
     labs(title = "周末住宿是否以孩子居多?", subtitle = "孩童總數與周末關係圖") +
     xlab("孩童總數") +
     ylab("周末住宿")
-# factor_wrap(~stays_in_weekend_nights, ~stays_in_week_nights)
+
+# 平日家庭客流量
+ggplot(data = hotel_df) +
+    geom_point(mapping = aes(x = children, y = stays_in_week_nights, fill = children)) +
+    labs(title = "平日日否均為非家庭旅客?", subtitle = "平日入住與孩童總數關係圖") +
+    xlab("孩童總數") +
+    ylab("平日住宿")
 
 # 月總客戶量
 ggplot(data = hotel_df) +
@@ -180,10 +186,6 @@ ggplot(data = hotel_df) +
     ylab("旅客總數") +
     theme(axis.text.x = element_text(angle = 60)) +
     facet_wrap(~hotel)
-
-# 用戶國家分布 - 要用ggmap畫
-ggplot(data = hotel_df) +
-    geom_bar(mapping = aes(x = country))
 
 # 旅客預付情形
 ggplot(data = hotel_df) +
